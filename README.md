@@ -107,10 +107,16 @@ RES, BSY and SEL can be driven by both initiator and target. ATN and ACK is alwa
 
 To be able to both drive and receive a signals requires one input and one output. Thus we need 12 I/O signals for the SCSI control signals.
 
-Normally the data bus is either in or out so it would be easy to assume that just nine signals plus a direction signal is required for the data bus. But in the arbitration phase SCSI devices would drive one single data line and watch the others. Thus we need one input and one output per data bus signal. I.e 18 I/O signals.
+Normally the data bus is either in or out so it would be easy to assume that just nine signals plus a direction signal is required for the data bus. But in the arbitration phase SCSI devices would drive one single data line and watch the others. Thus we need one input and one output per data bus signal. I.e 18 I/O signals. But since we could use a jumper to select the device own address in the aribtration phase a single pair of receiver and transmitter is reuired except for the already mentioned 10 signals. Thus the total ould be 12 I/O signals for the data bus. On the other hand this means that three-state drivers are required on the data inputs.
 
-In total SCSI would require 30 I/O port signals from the STM32 chip.
+In escence ther are two options either higher pin requirements on the STM32 or more complex driver logics.
 
-To drive the SCSI bus we need 7406 open collector drivers. Since 16 signals are driven we need three chips to handle this. For receieving it would be possible to connect them directly to the STM32 chip since it has +5V tolerant inputs.
+Option 1  would use 30 I/O signals and three 7406 chips for driving. The inputs go directly to the STM32 inputs since these are +5V tolerant.
+
+Option 2 would use 24 I/O signals also require three 7406 chips, but also a 74LS240 for the data bus and one pair of signals for the parity bit and the select bus bit. Adding up to 25 signals.
+
+In total SCSI would require either 25 or 30 I/O port signals from the STM32 chip depending on option chosen.
+
+
 
 
