@@ -81,7 +81,13 @@ P2 Connections
     
 In total 47 signals is used by the F880. In addition two that two input signals are indicated as RESERVED. The signal INRZ is not used at all. IRTH2 is an output instead of an input and IRTH1 is not used at all.
 
-The signals ITAD0, ITAD1 and IFAD could be constants as usually only one drive is connected at a time. Which means that we could handle the PERTEC interface with a minimum of 44 signals.
+The signals ITAD0, ITAD1 and IFAD could be grounded since usually only one drive is connected at a time. Which means that we could handle the PERTEC interface with a minimum of 44 signals.
+
+Of these 23 signals are driven by the host and requires open collector drivers. That is four 7406 chips. The inputs can be connected directly to the STM32 inputs since these are +5V tolerant. The inputs require pull-up which is already inside the chip. If the cable length is short enough this should be ok.
+
+Five signals in the PERTEC interface are pulsed. That is a short pulse is sent to indicate a certain condition or event. These are quite naturally the strobe signals, IWRSTR and IRSTR. But also the ICER, IHER, IFMK. The pulse length for the former two is specified in the document to at least 200 ns. From the schematics it is evident that the ciruitry in the drive will write the data read of the tape to a buffer register by a clock pulse. The writeing will take place using the rising edge of the signal. The falling edge will trigger a mono stable flip-fop which will trigger another mono stable flip-flop which is the IRSTR signal. Based on the R and C avlues used for these mono stable flip-flops I can deduce that the delay woul be approximately 900 ns and the the pulse length would be 1.5 us. SInce the maximum speed of the F880 is 100 ips and the densitity is 1600 bpi it would at maximum transfer 160 kByte per second, thus one word each 6.7 us. Higer speed would use different timing one could assume.
+
+The use of pulses requires edge triggered interrupts in the STM32 chip. There are 16 external interrupts that could come from GPIO pins.
 
 SCSI interface
 --------------
@@ -104,3 +110,7 @@ To be able to both drive and receive a signals requires one input and one output
 Normally the data bus is either in or out so it would be easy to assume that just nine signals plus a direction signal is required for the data bus. But in the arbitration phase SCSI devices would drive one single data line and watch the others. Thus we need one input and one output per data bus signal. I.e 18 I/O signals.
 
 In total SCSI would require 30 I/O port signals from the STM32 chip.
+
+To drive the SCSI bus we need 7406 open collector drivers. Since 16 signals are driven we need three chips to handle this. For receieving it would be possible to connect them directly to the STM32 chip since it has +5V tolerant inputs.
+
+
