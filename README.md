@@ -223,3 +223,10 @@ STM32 CORE207 BOARD MAPPING
 | 98          | PE1                   | SCSI-BSY-IN           |                        | I/O       | FT         |       | FSMC_NBL1, DCMI_D3, EVENTOUT                                                                                                  |                      |
 | 99          | RFU                   |                       | JUMPER COMP.J3 (NC)    |           |            | 7     |                                                                                                                               |                      |
 | 100         | VDD                   |                       |                        | S         |            |       |                                                                                                                               |                      |
+
+
+### Gerber files
+
+![PCB Layout](http://i.imgur.com/JL33uyx.png "PCB Layout")
+
+I have done a simple layout for this project and all the gerber files are in the repository.
