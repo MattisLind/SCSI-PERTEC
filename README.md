@@ -113,7 +113,7 @@ In escence ther are two options either higher pin requirements on the STM32 or m
 
 Option 1  would use 30 I/O signals and three 7406 chips for driving. The inputs go directly to the STM32 inputs since these are +5V tolerant.
 
-Option 2 would use 24 I/O signals also require three 7406 chips, but also a 74LS240 for the data bus and one pair of signals for the parity bit and the select bus bit. Adding up to 25 signals.
+Option 2 would use 24 I/O signals require two 74LS38 chips and also a 74LS244 for the data bus and one pair of signals for the parity bit and the bus direction bit. Then two 7416 chips for the control signals that the is transmitted by the device. Adding up to 25 signals.
 
 In total SCSI would require either 25 or 30 I/O port signals from the STM32 chip depending on option chosen.
 
